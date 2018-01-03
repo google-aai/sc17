@@ -1,0 +1,9 @@
+*.idea*
+*.pyc*
+*.egg-info*
+*nyc_dataprep*
+*~
+*DS_Store
+*.bmp
+*.ipynb_checkpoints*
+*.tar.gz
