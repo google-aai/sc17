@@ -16,8 +16,8 @@
 #
 # Set up network, compute engine VM, storage, and dataset for the sc17 project.
 #
-# To ensure correct setup, run this script in the default cloud shell in
-# the GCP web console (the ">_" icon at the top right).
+# To ensure correct setup, run this script in the default cloud shell
+# in the GCP web console (the ">_" icon at the top right).
 
 err() {
   echo "ERROR [$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
@@ -26,7 +26,7 @@ err() {
 
 # Check argument length
 if [ "$#" -lt 1 ]; then
-  echo "Usage: $0 project-name  [gpu-type] [compute-region] [dataflow-region]"
+  echo "Usage: $0 project-name [gpu-type] [compute-region] [dataflow-region]"
   echo "  project-name is the project name you specified during setup"
   echo "  gpu-type: either K80, P100, or None"
   echo "    (default: None)"
@@ -92,13 +92,13 @@ DATAFLOW_REGION_QUOTA=$(gcloud --format json compute regions \
 # The quota requirements here may be lower than the recommended in the README,
 # but this is mainly to ensure a minimum level of performance.
 
-echo "Checking global quotas..."
-check_quota "$GLOBAL_QUOTA" CPUS_ALL_REGIONS 200
-
 echo "Checking quotas for $DATAFLOW_REGION..."
 check_quota "$DATAFLOW_REGION_QUOTA" IN_USE_ADDRESSES 50
 check_quota "$DATAFLOW_REGION_QUOTA" DISKS_TOTAL_GB 65536
 check_quota "$DATAFLOW_REGION_QUOTA" CPUS 200
+
+echo "Checking global quotas..."
+check_quota "$GLOBAL_QUOTA" CPUS_ALL_REGIONS 200
 
 # If a gpu type is requested, check that you have at least one available
 # in the requested region.
@@ -306,6 +306,7 @@ do
     || true
 
   # SSH and execute script
+  gcloud compute config-ssh
   gcloud compute ssh --zone $ZONE $COMPUTE_INSTANCE -- 'bash -s' < ~/env_vars.sh \
     && break
   retry=$[$retry + 1]

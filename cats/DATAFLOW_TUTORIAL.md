@@ -82,7 +82,7 @@ We will discuss each step below.
 
 #### 'read_rows_from_cat_info_table'
 The **'read_rows_from_cat_info_table'** step reads rows from a source, in this
-case, a BigQuery source. The BigQuery source is defined by a SQL query. In the
+case, a bigquery source. The bigquery source is defined by a sql query. In the
 default setup for the tutorial, the query passed into the BigQuerySource is:
 
 ```
@@ -96,7 +96,7 @@ FROM [dataset.catinfo]
 The output of reading this source is a collection of dictionary elements, where
 each row read from the query is converted to a dictionary, with each key
 corresponding to a column name, and each value corresponding to the value in
-that column. A row from the BigQuery source would look something like this:
+that column. A row from the bigquery source would look something like this:
 
 ```
 {
@@ -107,7 +107,7 @@ that column. A row from the BigQuery source would look something like this:
 }
 ```
 
-#### 'fetch_images_from_urls'
+####'fetch_images_from_urls'
 
 This step is a known as a **transformation** step and follows the syntax:
 
@@ -130,7 +130,7 @@ x height x 3 colors). The function then returns all of the other entries, but
 replacing 'original_url' with the entry {'img': [raw_img_tensor]}. If the image
 does not exist, it will return nothing, represented by a python "None" object.
 
-#### 'filter_bad_or_absent_images`
+####'filter_bad_or_absent_images`
 
 Obviously, we don't want to process any missing images ("None" objects) from the
 previous step. This step is known as a *filter* step and follows the syntax:
@@ -154,7 +154,7 @@ def filter_bad_or_missing_image(img_and_metadata):
 image" on Flickr, remove it from the pipeline.
 * Otherwise, pass the datum on to the next step.
 
-#### 'resize_and_pad_images'
+####'resize_and_pad_images'
 
 This is the most involved step in the tutorial. In order to run our machine
 learning algorithms to run properly in subsequent steps, the output image has to
@@ -186,7 +186,7 @@ def resize_and_pad(img_and_metadata, output_image_dim=128):
   # default size is 128 if no side input provided
 ```
 
-#### 'write_images_to_storage'
+####'write_images_to_storage'
 
 
 The final step is also a *transform* step which writes the output image to a
@@ -292,14 +292,14 @@ above organized as a linear pipeline like this:
 </div>
 
 Notice that each step is running simultaneously as in an assembly line. Once an
-entry is read from BigQuery, it is passed to the next step (fetching the image),
+entry is read from bigquery, it is passed to the next step (fetching the image),
 and once that is completed, it is passed to subsequent steps. The preprocessed
 images will begin to show up in your storage bucket as soon as they run through
 the pipeline!
 
 Furthermore, you might notice images being written "out of order". This is
 because of massive parallelization, where multiple machines read different
-subsets of the BigQuery table and start processing these elements using the
+subsets of the big query table and start processing these elements using the
 pipeline architecture. Pretty cool right?
 
 Finally, you may notice that each component takes a different amount of "time".

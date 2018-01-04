@@ -86,7 +86,7 @@ Click on the ">_" icon at the top right of your web console to open a cloud
 shell. Inside the cloud shell, execute the following commands:
 
 ```
-git clone https://github.com/kozyrkov/sc17.git
+git clone https://github.com/google-aai/sc17.git
 cd sc17
 ```
 
@@ -101,15 +101,15 @@ script:
 chmod 777 setup_step_1_cloud_project.sh
 ```
 
-Then run the script to create storage, dataset, and
-compute VMs for your project (Note: using the "sh" command will fail as it
+Then run the script to create storage, dataset,
+and compute VMs for your project (Note: using the "sh" command will fail as it
 is missing some necessary syntax in the cloud shell environment.)
 ```
 ./setup_step_1_cloud_project.sh project-name [gpu-type] [compute-region] [dataflow-region]
 ```
 
 where:
-* project-name is the ID of the project you created (check the Cloud Dashboard for the ID extension if needed)
+* [project-name] is the ID of the project you created (check the Cloud Dashboard for the ID extension if needed)
 * [gpu-type] (optional) is either None, K80, or P100
 (default: None)
 * [compute-region] (optional) is the region you will create your data science VM
@@ -140,7 +140,7 @@ In the new window, run git clone to download the project onto your VM, and cd
 into it:
 
 ```
-git clone https://github.com/kozyrkov/sc17.git
+git clone https://github.com/google-aai/sc17.git
 cd sc17
 ```
 

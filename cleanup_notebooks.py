@@ -61,7 +61,7 @@ for notebook_path in notebook_paths:
       cell_metadata = cell['metadata']
       for key in cell_metadata.keys():
         if key not in VALID_CELL_METADATA_KEYS:
-          metadata.pop(key)
+          cell_metadata.pop(key)
 
       # Reset execution counts for all code cells to 0
       if cell['cell_type'] == 'code':

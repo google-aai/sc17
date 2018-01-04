@@ -143,32 +143,16 @@ gsutil -m cp gs://$BUCKET/catimages/training_images/002*.png ~/data/debugging_sm
 echo "done!"
 ```
 
-Go to your browser and work through notebooks `step_4_to_4_part1.ipynb` and
-`step_4_to_4_part2.ipynb`.
-
-## Step 5: Basics of Neural Networks
-
-Work through notebooks `step_5_to_5_part1.ipynb` and `step_5_to_5_part2.ipynb`.
-
-## Step 5-7: Training and Debugging Models with Various Tools
-
-`step_5_to_6_part3.ipynb` runs through a logistic regression model using Sci-kit
-Learn and Tensorflow based on some basic image features.
-
-`step_5_to_7_part4.ipynb` trains a convolutional neural network using
-Tensorflow and runs some debugging steps to look at pictures which were wrongly
-classified.
-
-## Step 8-9: Validation and Testing
+Once this is done, you can begin work on notebooks `step_4_to_4_part1.ipynb` and
+`step_4_to_4_part2.ipynb`.  We suggest running the lines below before you begin with
+the notebooks so the downloads can happen while you are working with Jupyter and you
+needn't wait idly.
 
 <span style="color:red">*Expected image set download time: 20 minutes*</span>
 
-Before proceeding, if you have been running data science on a VM without GPU,
-strongly consider creating a new one with GPU. For this exercise, K80 is the
-best tradeoff for its cost and run time.
-
-Download all of your image sets to the VM. Then set aside a couple thousand
+Download all of your image sets to the VM. Then set aside a few thousand
 training images for debugging.
+
 ```
 mkdir -p ~/data/training_images
 gsutil -m cp gs://$BUCKET/catimages/training_images/*.png ~/data/training_images/
@@ -181,6 +165,25 @@ mv ~/data/training_images/000*.png ~/data/debugging_images/
 mv ~/data/training_images/001*.png ~/data/debugging_images/
 echo "done!"
 ```
+
+## Step 5: Basics of Neural Networks
+
+Work through notebooks `nn_demo_part1.ipynb` and `nn_demo_part2.ipynb`.
+
+## Step 5-7: Training and Debugging Models with Various Tools
+
+`step_5_to_6_part1.ipynb` runs through a logistic regression model using Sci-kit
+Learn and Tensorflow based on some basic image features.
+
+`step_5_to_8_part2.ipynb` trains a convolutional neural network using
+Tensorflow and runs some debugging steps to look at pictures which were wrongly
+classified.
+
+## Step 8-9: Validation and Testing
+
+Before proceeding, if you have been running data science on a VM without GPU,
+strongly consider creating a new one with GPU. For this exercise, K80 is the
+best tradeoff for its cost and run time.
 
 Run `step_8_to_9.ipynb` to train a model, do some basic debugging, and run
 validation and testing on the entire dataset.
