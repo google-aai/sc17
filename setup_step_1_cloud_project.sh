@@ -210,29 +210,6 @@ check_and_enable_service cloudresourcemanager.googleapis.com
 echo "APIs enabled!"
 
 
-#### EXTERNAL IP ADDRESS ####
-# Use project specific external ip address name to avoid duplicating
-# external ips for the same project
-IP_ADDRESS_NAME=$PROJECT-compute-ip-address
-# Check if an ip address was already created for your instance.
-IP_CREATED=$(gcloud compute addresses list | grep $IP_ADDRESS_NAME) || true
-# If not created yet, create an ip address.
-if [[ -z "$IP_CREATED" ]]; then
-  # Create a static ip address for use with VM instance to be created.
-  gcloud compute addresses create $IP_ADDRESS_NAME --region $COMPUTE_REGION \
-    || err "Could not create IP address in region $COMPUTE_REGION"
-fi
-
-# Parse out the ip from description
-IP_ADDRESS=$(gcloud compute addresses describe $IP_ADDRESS_NAME \
-  --region $COMPUTE_REGION \
-  | grep "address:" \
-  | cut -d' ' -f2) \
-  || err "IP address was not created in region $COMPUTE_REGION"
-
-echo "Using static ip address in region $COMPUTE_REGION: $IP_ADDRESS"
-
-
 #### CREATE VM FOR DATA SCIENCE ####
 # Create a VM to use for supercomputing!
 # Note that notebooks primarily run on a single cpu core, so we do not need too
@@ -264,9 +241,7 @@ gcloud compute instances create $COMPUTE_INSTANCE \
   --boot-disk-type pd-standard \
   --boot-disk-size 256GB \
   --scopes cloud-platform \
-  --address $IP_ADDRESS \
   --network default \
-  --tags http-server,https-server \
   --maintenance-policy TERMINATE \
   --restart-on-failure \
   --metadata startup-script="'$STARTUP_SCRIPT'" \
@@ -300,7 +275,7 @@ do
 
   # Create a temporary firewall rule for ssh connections
   # Ignore error if rule is already created.
-  gcloud compute firewall-rules create temp-ssh \
+  gcloud compute firewall-rules create allow-ssh \
     --allow tcp:22 \
     --source-ranges 0.0.0.0/0 \
     || true
@@ -318,10 +293,6 @@ done
 if [ $retry -ge 5 ]; then
   err "Unsuccessful setting up bashrc environment for $COMPUTE_INSTANCE"
 fi
-
-# Remove temporary ssh firewall rule
-# Should not fail, but if rule has already been deleted, ignore failure message.
-gcloud compute firewall-rules delete temp-ssh -q || true
 
 #### STORAGE ####
 # Create a storage bucket for the demo if it doesn't exist.
