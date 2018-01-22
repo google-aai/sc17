@@ -28,7 +28,7 @@ err() {
 #### Bash variables ####
 # The directory of the shell script, e.g. ~/code in the lecture slides.
 BASE_DIR=$(dirname "$0")
-# The port to allow traffic.
+# The remote port for Jupyter traffic.
 PORT=5000
 # Check if machine has GPU support.
 LSPCI_OUTPUT=$(lspci -vnn | grep NVIDIA)
@@ -54,17 +54,14 @@ sudo apt-get install -y \
   || err 'failed to install opencv dependencies'
 
 # If we are using a GPU machine, install cuda libraries
-if ! -z $LSPCI_OUTPUT; then
-  # Check for CUDA 8.0 and try to install.
-  if ! dpkg-query -W cuda-8-0; then
-    # The 16.04 installer works with 16.10.
-    sudo curl -O http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb \
-      || err 'failed to find cuda repo for ubuntu 16.0'
-    sudo dpkg -i ./cuda-repo-ubuntu1604_8.0.61-1_amd64.deb
-    sudo apt-get update
-    sudo apt-get install cuda-8-0 -y \
-      || err 'failed to install cuda 8.0'
-  fi
+if [ -n "$LSPCI_OUTPUT" ]; then
+  # The 16.04 installer works with 16.10.
+  sudo curl -O http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb \
+    || err 'failed to find cuda repo for ubuntu 16.0'
+  sudo dpkg -i ./cuda-repo-ubuntu1604_8.0.61-1_amd64.deb
+  sudo apt-get update
+  sudo apt-get install cuda-8-0 -y \
+    || err 'failed to install cuda 8.0'
 
   # Check for available cuda 8.0 libraries
   CUDA_LIBRARIES_URL=http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64/
@@ -128,17 +125,11 @@ pip install -r $BASE_DIR/requirements.txt \
   || err 'failed to pip install a required library'
 
 # If this is a GPU machine, install tensorflow-gpu
-if ! -z $LSPCI_OUTPUT; then
+if [ -n "$LSPCI_OUTPUT" ]; then
   pip install tensorflow-gpu==1.3.0
 fi
 
 #### JUPYTER SETUP ####
-
-# Setup firewall rule, allow port tcp:3389 for jupyter
-# If this returns an error, display error but continue with jupyter setup.
-gcloud compute firewall-rules create allow-jupyter \
-  --allow=tcp:$PORT \
-  --description="allow jupyter on port $PORT for data science"
 
 # Switch into $BASE_DIR, e.g. ~/code
 cd $BASE_DIR

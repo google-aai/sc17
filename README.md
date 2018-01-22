@@ -44,6 +44,10 @@ for compute-intensive tasks.
 To set up the data science VM, we will need to extend the quota for GPUs.
 * Select your project from the list on the
 [resource quota page](https://console.cloud.google.com/iam-admin/quotas).
+  * (If this is the first time creating the project, compute engine may still
+  need to boot up. If the quota page does not have GPU options, click on
+  "Compute Engine" in the dropdown menu on the top left, and click quota there.
+  Wait for it to load, and return to the quota page above.)
 * If you would like to try out a GPU machine (recommended),
 [find a region that has gpu support](https://cloud.google.com/compute/docs/gpus/).
  At the time this tutorial was written, valid regions include
@@ -74,8 +78,8 @@ above to edit quotas:
   * Change the following quotas:
     * CPUs (all regions): 400
 
-After you have completed these steps, wait a few minutes until you receive email
-from GCP approving all of your quota increases.  Please note that you may be asked to
+After you have completed these steps, you will need to wait until you receive
+an email approving of the quota increases. Please note that you may be asked to
 provide credit card details to confirm these increases.
 
 ## Setup Cloud Project Components and API
@@ -233,25 +237,56 @@ still be running, including Jupyter which you started in Screen!
 
 ## Connecting to Jupyter
 
-So Jupyter is running inside a Screen terminal even though your ssh session has
-ended. Let's try it out!
+Jupyter is now running inside a Screen terminal even though your ssh session has
+ended. Let's try it out through an ssh tunnel (For security reasons, we will
+not simply open up a firewall port and show your notebook to the entire world!)
 
-In our Jupyter setup, we used port 5000 for our incoming/outgoing traffic
-for Jupyter. Go to your [Cloud Compute VM instances interface](https://console.cloud.google.com/compute/instances)
-to find the External IP address of your VM. Open a new browser window, copy it
-into the address bar, and add ":5000" to connect to port 5000 where Jupyter
-sends and receives messages from the web.
-The website you enter will look something like:
+On your local computer, make sure you have [gcloud sdk installed](https://cloud.google.com/sdk/downloads).
+Then run:
 
 ```
-100.110.120.130:5000
+gcloud init
 ```
 
-Enter your password if prompted. Once you are in, you can see the notebook view
-of the directory you started Jupyter in.
+Follow the instructions and choose your project, and then choose the region
+corresponding to where your vm was created. After this has been setup, run:
 
-Before proceeding, please read the
-[resource guide](RESOURCE_GUIDE.md) to beware of common pitfalls (such as
-forgetting to stop your VM when not using it!) and other ways to save on cost.
+```
+gcloud compute config-ssh
+```
+
+After this runs successfully, you will get this back in your shell:
+
+```
+You should now be able to use ssh/scp with your instances.
+For example, try running:
+
+  $ ssh [instance-name].[region-name].[project-name]
+```  
+  
+Run the suggested command to check that ssh works when connecting to your cloud
+VM. Then exit the ssh shell by typing `exit`.
+
+Now we are ready to connect to Jupyter! Run the same ssh command again, but this
+time, add some flags and ports:
+
+```
+ssh -N -f -L localhost:8888:localhost:5000 [instance-name].[region-name].[project-name]
+```
+
+This command basically configures port forwarding, redirecting port 5000 on your
+cloud VM to your own computer's port 8888. Now go to your web browser, and type:
+
+```
+localhost:8888
+```
+
+If you see a password page for Jupyter, enter your password as prompted.
+Once you are in, you can see the notebook view of the directory you
+started Jupyter in.
+
+Before proceeding, please read the [resource guide](RESOURCE_GUIDE.md) to beware
+of common pitfalls (such as forgetting to stop your VM when not using it!) and
+other ways to save on cost.
 
 **Hooray! [Let's go detect some cats!](cats/README.md)**
