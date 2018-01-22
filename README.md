@@ -1,8 +1,12 @@
 # Making Friends with ML Tutorial
 
-This tutorial is meant to run fully on the Google Cloud Platform.
+Authors: Cassie Kozyrkov (@kozyrkov) and Brian Foo (@bkungfoo)
+
+Team: Google Applied AI
 
 ## Create and Setup Cloud Project
+
+**This tutorial is meant to run fully on the Google Cloud Platform.**
 
 Starting with your web browser, do the following:
 
