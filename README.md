@@ -265,7 +265,7 @@ After this runs successfully, you will get this back in your shell:
 You should now be able to use ssh/scp with your instances.
 For example, try running:
 
-  $ ssh [instance-name].[region-name].[project-name]
+  $ ssh [instance-name].[zone-name].[project-name]
 ```  
   
 Run the suggested command to check that ssh works when connecting to your cloud
@@ -275,7 +275,7 @@ Now we are ready to connect to Jupyter! Run the same ssh command again, but this
 time, add some flags and ports:
 
 ```
-ssh -N -f -L localhost:8888:localhost:5000 [instance-name].[region-name].[project-name]
+ssh -N -f -L localhost:8888:localhost:5000 [instance-name].[zone-name].[project-name]
 ```
 
 This command basically configures port forwarding, redirecting port 5000 on your
