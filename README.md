@@ -1,4 +1,4 @@
-# Making Friends with ML Tutorial
+# Step-by-Step Deep Learning Tutorial
 
 Authors: Cassie Kozyrkov (@kozyrkov) and Brian Foo (@bkungfoo)
 
