@@ -4,6 +4,12 @@ Authors: Cassie Kozyrkov (@kozyrkov) and Brian Foo (@bkungfoo)
 
 Team: Google Applied AI
 
+## Follow along with us!
+
+Take a look at these **walkthrough slides** with screenshots to guide you along:
+[github.com/kozyrkov/deep-learning-walkthrough](https://github.com/kozyrkov/deep-learning-walkthrough)
+Bonus: slides contain ML hints, summaries, and pitfall alerts.
+
 ## Create and Setup Cloud Project
 
 **This tutorial is meant to run fully on the Google Cloud Platform.**
